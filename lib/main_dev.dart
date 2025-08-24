@@ -1,9 +1,13 @@
 import 'package:mave/pages/home.dart' show HomePage;
 import 'package:flutter/material.dart';
 
+
+
 void main() async{
   runApp(const MyApp());
 }
+
+
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -19,4 +23,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
