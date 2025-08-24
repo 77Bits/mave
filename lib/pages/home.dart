@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mave/typs.dart';
+import 'package:mave/toolkit/typs.dart';
 import 'package:mave/pages/widgets/comic_grid.dart' show ComicGrid;
 
 
