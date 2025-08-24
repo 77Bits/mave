@@ -1,6 +1,6 @@
 import 'package:html/parser.dart';
 import 'package:html/dom.dart' show Document, Element;
-import 'package:mave/typs.dart' show Comic;
+import 'package:mave/toolkit/typs.dart' show Comic;
 
 
 
