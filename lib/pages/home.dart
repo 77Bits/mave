@@ -49,7 +49,7 @@ class FirstTimeLoading extends StatelessWidget {
 
 
   static Future<List<Comic>> loadComics() async{
-    final resp = await http.get(Uri.parse("https://www.mangaread.org/"));
+    final resp = await http.get(Uri.parse("https://mangapill.com/chapters"));
     return Scraper.comics(resp.body).toList();
   }
 
