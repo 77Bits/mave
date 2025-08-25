@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:mave/toolkit/typs.dart' show Comic;
+import 'package:mave/website/info.dart' show IMAGE_HEADERS;
 
 
 
@@ -75,16 +76,17 @@ class _GridCachedImage extends StatelessWidget {
       height      : double.infinity,
       width       : double.infinity,
       fit         : BoxFit.cover,
-      placeholder : (_, _) => imageWaitingAnimation,
+      placeholder : (_, _) => _imageWaitingAnimation,
       errorWidget : (_, _, error) => Icon(Icons.error),
+      httpHeaders : IMAGE_HEADERS,
+      
     );
   }
 
 
- 
 
 
-  static const imageWaitingAnimation = Center(
+  static const _imageWaitingAnimation = Center(
     child: SizedBox(
       height: 30,
       width: 30,
