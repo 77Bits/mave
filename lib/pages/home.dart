@@ -22,11 +22,12 @@ class _HomePageState extends State<HomePage> {
 
   
   Future<void> _future = fetch.fillEmptyDatabase();
+  int          _page   = 0;
+  List<Comic>  _comics = [];
 
-  Widget? _appBarTail;
+  Widget?  _appBarTail;
 
   final ScrollController _viewController = ScrollController();
-  
   
 
 
@@ -39,11 +40,41 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
+
+  @override
+  void initState() {
+    super.initState();
+    _viewController.addListener(_viewListener);
+  }
+
+
+  void _viewListener(){
+    if (_viewController.position.pixels >= _viewController.position.maxScrollExtent - 400){
+        _fillViewer();
+    }
+  }
+
+  void _fillViewer() async{
+    final dbResult = await fetch.loadComics(_page++);
+    if (dbResult.isEmpty){
+      _viewController.removeListener(_viewListener);
+      return ;
+    }
+    setState(() {
+      _comics.addAll(dbResult);
+    });
+  }
   
 
   Widget _snapshotBuilder(BuildContext context, AsyncSnapshot<void> snapshot){
     if (snapshot.connectionState == ConnectionState.done){
-      if (!snapshot.hasError) return ComicGrid([]);
+      if (!snapshot.hasError){
+        if (_comics.isEmpty) _fillViewer();
+        return ComicGrid(
+          comics    : _comics,
+          controller: _viewController,
+        );
+      }
 
       final error = snapshot.error!;
       if (error is SocketException)
