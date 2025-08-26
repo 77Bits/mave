@@ -83,24 +83,11 @@ class _GridCachedImage extends StatelessWidget {
       height      : double.infinity,
       width       : double.infinity,
       fit         : BoxFit.cover,
-      placeholder : (_, _) => _imageWaitingAnimation,
       errorWidget : (_, _, error) => Icon(Icons.error),
       httpHeaders : IMAGE_HEADERS,
       
     );
   }
-
-
-
-
-  static const _imageWaitingAnimation = Center(
-    child: SizedBox(
-      height: 30,
-      width: 30,
-      child: CircularProgressIndicator(),
-    ),
-  );
-
 }
 
 
