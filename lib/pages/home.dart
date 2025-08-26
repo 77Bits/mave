@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mave/toolkit/typs.dart';
 import 'package:mave/pages/widgets/comic_grid.dart' show ComicGrid;
-
-
-import 'package:mave/toolkit/tools/load_comics.dart' as tools;
+import 'package:mave/toolkit/toolkit.dart' show loadComics, Comic;
 
 
 
@@ -24,7 +21,7 @@ class HomePage extends StatelessWidget{
 
 
 class FirstTimeLoading extends StatelessWidget {
-  Future<List<Comic>> _comicListPromise = tools.loadComics(0);
+  Future<List<Comic>> _comicListPromise = loadComics(0);
 
   
 
