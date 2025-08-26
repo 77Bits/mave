@@ -1,6 +1,5 @@
 import 'package:http/http.dart' as http;
-import 'package:mave/toolkit/database/comic.dart';
-import 'package:mave/toolkit/typs.dart';
+import 'package:mave/toolkit/toolkit.dart';
 import 'package:mave/website/scraper.dart';
 
 
