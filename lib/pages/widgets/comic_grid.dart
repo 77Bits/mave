@@ -7,10 +7,16 @@ import 'package:mave/website/info.dart' show IMAGE_HEADERS;
 
 
 class ComicGrid extends StatelessWidget {
-  final List<Comic> _comicList;
+  final List<Comic> comics;
+  final ScrollController controller;
 
 
-  const ComicGrid(this._comicList, {super.key});
+  const ComicGrid({
+    required this.comics,
+    required this.controller,
+    super.key
+  });
+
 
   @override
   Widget build(BuildContext context) {
@@ -21,9 +27,10 @@ class ComicGrid extends StatelessWidget {
         crossAxisSpacing  : 4,
         childAspectRatio  : 0.7,
       ),
-      itemCount  : _comicList.length,
+      controller : controller,
+      itemCount  : comics.length,
       itemBuilder: (context, index){
-        final cm = _comicList[index];
+        final cm = comics[index];
         return ClipRRect(
           borderRadius: BorderRadius.circular(7.14),
           child: ColoredBox(
@@ -55,9 +62,9 @@ class ComicGrid extends StatelessWidget {
 
 
 class _GridCachedImage extends StatelessWidget {
-  final String image_url;
+  final String imageUrl;
 
-  const _GridCachedImage(this.image_url, {super.key});
+  const _GridCachedImage(this.imageUrl, {super.key});
 
 
 
@@ -71,7 +78,7 @@ class _GridCachedImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CachedNetworkImage(
-      imageUrl    : image_url,
+      imageUrl    : imageUrl,
       cacheManager: cacheManager,
       height      : double.infinity,
       width       : double.infinity,
