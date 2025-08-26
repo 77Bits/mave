@@ -3,12 +3,8 @@ import 'package:mave/toolkit/typs.dart';
 import 'package:mave/pages/widgets/comic_grid.dart' show ComicGrid;
 
 
+import 'package:mave/toolkit/tools/load_comics.dart' as tools;
 
-
-//test libs
-import 'package:http/http.dart' as http;
-import 'package:mave/website/scraper.dart';
-//
 
 
 
@@ -28,7 +24,7 @@ class HomePage extends StatelessWidget{
 
 
 class FirstTimeLoading extends StatelessWidget {
-  Future<List<Comic>> _comicListPromise = FirstTimeLoading.loadComics();
+  Future<List<Comic>> _comicListPromise = tools.loadComics(0);
 
   
 
@@ -40,7 +36,9 @@ class FirstTimeLoading extends StatelessWidget {
       future: _comicListPromise,
       builder: (context, comicListPromise){
         if (comicListPromise.connectionState == ConnectionState.done){
-          return ComicGrid(comicListPromise.data!);
+          if (!comicListPromise.hasError)
+            return ComicGrid(comicListPromise.data!);
+          return Text(comicListPromise.error!.toString());
         }
         else return CircularProgressIndicator();
       } 
@@ -48,9 +46,5 @@ class FirstTimeLoading extends StatelessWidget {
   }
 
 
-  static Future<List<Comic>> loadComics() async{
-    final resp = await http.get(Uri.parse("https://mangapill.com/chapters"));
-    return Scraper.comics(resp.body).toList();
-  }
 
 }
