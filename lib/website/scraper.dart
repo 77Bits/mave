@@ -10,30 +10,45 @@ class Scraper{
 
 
 
-  static Iterable<Comic> comics(String htmlCode){
-    return _HomepageScraper(htmlCode).get_comics();
+  static Iterable<Comic> recentComics(String htmlCode){
+    return _RecentpageScraper(htmlCode).get_comics();
+  }
+
+  static Iterable<Comic> newComics(String htmlCode){
+    return _NewpageScraper(htmlCode).get_comics();
   }
 }
 
+class _NewpageScraper extends _RecentpageScraper{
 
+  _NewpageScraper(String htmlCode): super(htmlCode);
 
+  @override
+  Comic card2Comic(Element card) {
+    return Comic(
+      title: card.querySelector('.mt-3')!.text.trim(),
+      url  : URL_PREFIX + card.querySelector('a')!.attributes['href']!,
+      cover: card.querySelector('img')!.attributes['data-src']!,
+    );
+  }
+}
 
-class _HomepageScraper {
+class _RecentpageScraper {
 
   late final Document tree;
 
-  _HomepageScraper(String htmlCode){
+  _RecentpageScraper(String htmlCode){
     this.tree = parse(htmlCode);
   }
 
 
   Iterable<Comic> get_comics(){
     final cards = tree.querySelectorAll(".grid > div");
-    return cards.map(_HomepageScraper.card2Comic);
+    return cards.map(card2Comic);
   }
 
 
-  static Comic card2Comic(Element card){
+  Comic card2Comic(Element card){
     final String title = card.querySelector('.text-sm')!.text.trim();
     return Comic(
       title: title,

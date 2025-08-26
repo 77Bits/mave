@@ -15,7 +15,10 @@ Future<void> fillEmptyDatabase() async{
   final comicsFromDb = await ComicDb.self.getComicsWithOffset(0);
   if (comicsFromDb.length == 0){
     final resp = await http.get(Uri.parse("https://mangapill.com/chapters"));
-    final comicsFromRemote = Scraper.comics(resp.body).toList();
+    final resp2 = await http.get(Uri.parse("https://mangapill.com/mangas/new"));
+    final comicsFromRemote = Scraper.recentComics(resp.body).toList();
+    comicsFromRemote.addAll(Scraper.newComics(resp2.body));
+
     await ComicDb.self.addComics(comicsFromRemote);
   }
 }
