@@ -71,7 +71,7 @@ class _GridCachedImage extends StatelessWidget {
   static final cacheManager = CacheManager(Config(   
       "covers",
       stalePeriod        : const Duration(days: 7),
-      maxNrOfCacheObjects: 130,
+      maxNrOfCacheObjects: 200,
   ));
 
 
