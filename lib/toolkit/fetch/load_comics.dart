@@ -13,7 +13,7 @@ Future<List<Comic>> loadComics(int page) async{
 
 Future<void> fillEmptyDatabase() async{
   final comicsFromDb = await ComicDb.self.getComicsWithOffset(0);
-  if (comicsFromDb.length == 0){
+  if (comicsFromDb.isEmpty){
     final resp = await http.get(Uri.parse("https://mangapill.com/chapters"));
     final resp2 = await http.get(Uri.parse("https://mangapill.com/mangas/new"));
     final comicsFromRemote = Scraper.recentComics(resp.body).toList();
