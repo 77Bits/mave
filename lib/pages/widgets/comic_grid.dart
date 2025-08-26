@@ -35,19 +35,15 @@ class ComicGrid extends StatelessWidget {
           borderRadius: BorderRadius.circular(7.14),
           child: ColoredBox(
             color: Colors.green,
-            child:Column(
-              mainAxisSize:MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
+            child:Stack(
               children: [
-                Flexible(child: _GridCachedImage(cm.cover)),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 3.3, vertical: 0.8),
-                  child: Text(
-                    cm.title,
-                    maxLines : 1,
-                    overflow : TextOverflow.ellipsis,
-                    textAlign: TextAlign.left,
-                  )
+                _GridCachedImage(cm.cover),
+                Positioned(
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  height: 20,
+                  child: _GridPaddedText(cm.title),
                 )
               ],
             )
@@ -56,7 +52,31 @@ class ComicGrid extends StatelessWidget {
       },
     );
   }
-  
+}
+
+
+class _GridPaddedText extends StatelessWidget{
+  final String title;
+
+  _GridPaddedText(this.title, {super.key});
+
+
+  @override
+  Widget build(BuildContext context) {
+    return ColoredBox(
+      color: Colors.grey.withOpacity(0.7),
+      child:Padding(
+        padding: EdgeInsets.symmetric(horizontal: 3.3, vertical: 0.8),
+        child: Text(
+          title,
+          maxLines : 1,
+          overflow : TextOverflow.ellipsis,
+          textAlign: TextAlign.left,
+        )
+      )
+    );
+  }
+
 }
 
 
