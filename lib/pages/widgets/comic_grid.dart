@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:mave/modules/modules.dart' show Comic;
+import 'package:mave/modules/modules.dart' show Comic, ComicLabel;
 import 'package:mave/website/info.dart' show IMAGE_HEADERS;
 
 
@@ -9,11 +9,13 @@ import 'package:mave/website/info.dart' show IMAGE_HEADERS;
 class ComicGrid extends StatelessWidget {
   final List<Comic> comics;
   final ScrollController controller;
+  final Map<String, ComicLabel> comicLabel;
 
 
   const ComicGrid({
     required this.comics,
     required this.controller,
+    this.comicLabel = const {},
     super.key
   });
 
@@ -44,7 +46,8 @@ class ComicGrid extends StatelessWidget {
                   right: 0,
                   height: 20,
                   child: _GridPaddedText(cm.title),
-                )
+                ),
+                if (comicLabel.containsKey(cm.url)) Icon(Icons.new_label),
               ],
             )
           )

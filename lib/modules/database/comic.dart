@@ -14,7 +14,18 @@ class ComicDb{
   static const TABLE_NAME    = "Comics";
 
 
-  Future<void> addComics(List<Comic> comics) async{
+  Future<bool> comicExistsByUrl(Comic comic) async{
+    final db = await connection;
+    return (await db.query(
+      TABLE_NAME,
+      where: 'url = ?',
+      whereArgs: [comic.url],
+
+    )).isNotEmpty;
+  }
+
+
+  Future<void> addComics(Iterable<Comic> comics) async{
     final db = await connection;
     final batch = db.batch();
     for (var c in comics) 
