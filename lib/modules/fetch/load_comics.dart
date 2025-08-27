@@ -1,5 +1,5 @@
 import 'package:http/http.dart' as http;
-import 'package:mave/toolkit/toolkit.dart';
+import 'package:mave/modules/modules.dart';
 import 'package:mave/website/scraper.dart';
 
 
