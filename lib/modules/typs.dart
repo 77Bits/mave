@@ -2,20 +2,25 @@
 
 
 
+enum ComicState {
+  normal,
+  favorite,
+  blacklist
+}
+
+
+
+
 class Comic {
 
-  static const int BOOKMARKED = 2;
-  static const int BLOCKED    = 1;
-  static const int NORMAL     = 0;
-
-
+  
 
   int? id;
 
-  final String title;
-  final String url;
-  final String cover;
-  final int    state;
+  final String     title;
+  final String     url;
+  final String     cover;
+  final ComicState state;
 
 
   
@@ -24,7 +29,7 @@ class Comic {
     required this.title,
     required this.url, 
     required this.cover,
-    this.state = 0,
+    this.state = ComicState.normal,
   });
 
 
@@ -39,7 +44,7 @@ class Comic {
       "title":title,
       "url"  :url,
       "cover":cover,
-      "state":state,
+      "state":state.index,
     };
   }
 }
