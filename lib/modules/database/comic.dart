@@ -1,6 +1,6 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
-import 'package:mave/modules/modules.dart' show Comic;
+import 'package:mave/modules/modules.dart' show Comic, ComicState;
 
 
 
@@ -10,10 +10,9 @@ class ComicDb{
   static Database? _databaseConn;
 
 
-  static const int _comics_limit = 20;
-  static const TABLE_NAME = "Comics";
+  static const _comics_limit = 20;
+  static const TABLE_NAME    = "Comics";
 
-  
 
   Future<void> addComics(List<Comic> comics) async{
     final db = await connection;
@@ -26,7 +25,6 @@ class ComicDb{
       );
     await batch.commit();
   }
-
 
   
   Future<List<Comic>> getComicsWithOffset(int page) async{
@@ -45,7 +43,7 @@ class ComicDb{
       title: row['title']!,
       cover: row['cover']!, 
       url  : row['url']!,
-      state: row['state']!,
+      state: ComicState.values[row['state']!],
     )).toList();
   }
 
@@ -76,7 +74,7 @@ class ComicDb{
         title TEXT COLLATE NOCASE NOT NULL,
         url   TEXT NOT NULL UNIQUE,
         cover TEXT NOT NULL,
-        state INTEGER NOT NULL DEFAULT 0 CHECK(state IN (0, 1, 2))
+        state INTEGER NOT NULL CHECK(state IN (0, 1, 2))
       )
     """);
   }
