@@ -1,6 +1,6 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
-import 'package:mave/toolkit/toolkit.dart' show Comic;
+import 'package:mave/modules/modules.dart' show Comic;
 
 
 
