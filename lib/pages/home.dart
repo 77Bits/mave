@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'widgets.dart' show ComicGrid, NetworkIssueRetryWidget;
-import 'package:mave/modules/modules.dart' show Comic;
+import 'package:mave/modules/modules.dart' show Comic, ComicLabel;
 import 'package:mave/modules/fetch.dart' as fetch;
 
 
@@ -25,7 +25,7 @@ class _HomePageState extends State<HomePage> {
   int          _page   = 0;
   List<Comic>  _comics = [];
 
-  Widget?  _appBarTail;
+  Map<String, ComicLabel> _comicLabel = {};
 
   final ScrollController _viewController = ScrollController();
   
@@ -34,12 +34,40 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: FutureBuilder(
-        future : _future,
-        builder: _snapshotBuilder,
-      ),
+      body: RefreshIndicator(
+        onRefresh: () async => await _refresh(context),
+        child: FutureBuilder(
+          future : _future,
+          builder: _snapshotBuilder,
+        ),
+      ) 
     );
   }
+
+
+  Future<void> _refresh(BuildContext context) async{
+    try{
+      final newComicLabel = await fetch.updateComics();
+      setState(() {
+        _comicLabel = newComicLabel;
+      });
+      
+    } on SocketException{
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Network Issue'),
+        )
+      );
+    }catch (e){
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Unknown Error'),
+        )
+      );
+    }
+  }
+
+
 
   @override
   void initState() {
@@ -73,6 +101,7 @@ class _HomePageState extends State<HomePage> {
         return ComicGrid(
           comics    : _comics,
           controller: _viewController,
+          comicLabel: _comicLabel,
         );
       }
 

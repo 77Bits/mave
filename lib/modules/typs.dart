@@ -1,13 +1,8 @@
-
-
-
-
 enum ComicState {
   normal,
   favorite,
   blacklist
 }
-
 
 
 
@@ -48,3 +43,11 @@ class Comic {
     };
   }
 }
+
+
+
+enum ComicLabel {
+  newChapters,
+  newComic,
+}
+
