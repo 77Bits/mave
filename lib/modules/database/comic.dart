@@ -22,6 +22,7 @@ class ComicDb{
       batch.insert(
         TABLE_NAME,
         c.toMap(),
+        conflictAlgorithm: ConflictAlgorithm.ignore
       );
     await batch.commit();
   }

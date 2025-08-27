@@ -52,7 +52,7 @@ class _RecentpageScraper {
     final String title = card.querySelector('.text-sm')!.text.trim();
     return Comic(
       title: title,
-      url  : URL_PREFIX + card.querySelector('a')!.attributes['href']!,
+      url  : URL_PREFIX + card.querySelector('a.mt-1\\.5')!.attributes['href']!,
       cover: card.querySelector('img')!.attributes['data-src']!,
     );
   } 
