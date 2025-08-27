@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:mave/toolkit/typs.dart' show Comic;
+import 'package:mave/modules/modules.dart' show Comic;
 import 'package:mave/website/info.dart' show IMAGE_HEADERS;
 
 

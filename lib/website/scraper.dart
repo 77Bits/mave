@@ -1,6 +1,6 @@
 import 'package:html/parser.dart';
 import 'package:html/dom.dart' show Document, Element;
-import 'package:mave/toolkit/toolkit.dart' show Comic;
+import 'package:mave/modules/modules.dart' show Comic;
 import 'info.dart' show URL_PREFIX;
 
 

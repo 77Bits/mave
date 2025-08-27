@@ -1,8 +1,8 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'widgets.dart' show ComicGrid, NetworkIssueRetryWidget;
-import 'package:mave/toolkit/toolkit.dart' show Comic;
-import 'package:mave/toolkit/fetch.dart' as fetch;
+import 'package:mave/modules/modules.dart' show Comic;
+import 'package:mave/modules/fetch.dart' as fetch;
 
 
 
