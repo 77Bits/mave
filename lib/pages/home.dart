@@ -49,7 +49,14 @@ class _HomePageState extends State<HomePage> {
     try{
       final newComicLabel = await fetch.updateComics();
       setState(() {
+        // remove any previous listeners, to avoid _viewListener running twice.
+        _viewController.removeListener(_viewListener); 
         _comicLabel = newComicLabel;
+        // reload from database
+        _comics = [];
+        _page   = 0;
+        // add new listener.
+        _viewController.addListener(_viewListener);
       });
       
     } on SocketException{

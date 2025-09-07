@@ -19,17 +19,16 @@ Future<Map<String, ComicLabel>> updateComics() async{
   final Map<String, ComicLabel> report = {};
 
 
-  await _updateNewRemoteComics(newRemoteComics.toList(), report);
+  await _updateNewRemoteComics(newRemoteComics, report);
 
   return report;
 }
 
-Future<void> _updateNewRemoteComics(List<Comic> newRemoteComics, Map<String, ComicLabel> report) async{
+Future<void> _updateNewRemoteComics(Iterable<Comic> newRemoteComics, Map<String, ComicLabel> report) async{
   final List<Comic> comics2Insert = [];
   final db = ComicDb.self;
   
   for (Comic comic in newRemoteComics) {
-    print(comic);
     if (!(await db.comicExistsByUrl(comic))){
       comics2Insert.add(comic);
       report[comic.url] = ComicLabel.newComic;
