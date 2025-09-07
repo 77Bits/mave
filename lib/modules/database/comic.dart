@@ -44,10 +44,11 @@ class ComicDb{
       TABLE_NAME,
       limit  : _comics_limit,
       offset : _comics_limit * page,
+      orderBy: 'id DESC',
       columns: [
         'id'   , 'title', 'url',
         'cover', 'state'
-      ] 
+      ],
     );
     return rows.map((Map<String, dynamic> row) => Comic(
       id   : row['id']    , 
