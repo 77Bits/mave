@@ -1,4 +1,4 @@
-package com.github.u77bits.mave
+package com.github.null7u.mave
 
 import io.flutter.embedding.android.FlutterActivity
 
