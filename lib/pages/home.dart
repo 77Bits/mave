@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'widgets.dart' show ComicGrid, NetworkIssueRetryWidget;
 import 'package:mave/modules/modules.dart' show Comic, ComicLabel;
 import 'package:mave/modules/fetch.dart' as fetch;
+import 'comic.dart' show pushComicPage;
 
 
 
@@ -42,6 +43,28 @@ class _HomePageState extends State<HomePage> {
         ),
       ) 
     );
+  }
+
+
+  Widget _snapshotBuilder(BuildContext context, AsyncSnapshot<void> snapshot){
+    if (snapshot.connectionState == ConnectionState.done){
+      if (!snapshot.hasError){
+        if (_comics.isEmpty) _fillViewer();
+        return ComicGrid(
+          comics    : _comics,
+          controller: _viewController,
+          comicLabel: _comicLabel,
+          onTap     : pushComicPage,
+        );
+      }
+
+      final error = snapshot.error!;
+      if (error is SocketException)
+        return NetworkIssueRetryWidget(_retry);
+      else
+        return Text(snapshot.error.toString());
+    }
+    return _circularProgressIndCentered;
   }
 
 
@@ -98,27 +121,6 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       _comics.addAll(dbResult);
     });
-  }
-  
-
-  Widget _snapshotBuilder(BuildContext context, AsyncSnapshot<void> snapshot){
-    if (snapshot.connectionState == ConnectionState.done){
-      if (!snapshot.hasError){
-        if (_comics.isEmpty) _fillViewer();
-        return ComicGrid(
-          comics    : _comics,
-          controller: _viewController,
-          comicLabel: _comicLabel,
-        );
-      }
-
-      final error = snapshot.error!;
-      if (error is SocketException)
-        return NetworkIssueRetryWidget(_retry);
-      else
-        return Text(snapshot.error.toString());
-    }
-    return _circularProgressIndCentered;
   }
 
 

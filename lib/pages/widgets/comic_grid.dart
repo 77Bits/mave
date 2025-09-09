@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_cache_manager/flutter_cache_manager.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:mave/modules/modules.dart' show Comic, ComicLabel;
-import 'package:mave/website/info.dart' show IMAGE_HEADERS;
+import 'cached_image.dart' show ComicCover;
 
 
 
@@ -11,11 +9,14 @@ class ComicGrid extends StatelessWidget {
   final ScrollController controller;
   final Map<String, ComicLabel> comicLabel;
 
+  final void Function(BuildContext, Comic)? onTap;
+
 
   const ComicGrid({
     required this.comics,
     required this.controller,
     this.comicLabel = const {},
+    this.onTap,
     super.key
   });
 
@@ -33,22 +34,25 @@ class ComicGrid extends StatelessWidget {
       itemCount  : comics.length,
       itemBuilder: (context, index){
         final cm = comics[index];
-        return ClipRRect(
-          borderRadius: BorderRadius.circular(7.14),
-          child: ColoredBox(
-            color: Colors.green,
-            child:Stack(
-              children: [
-                _GridCachedImage(cm.cover),
-                Positioned(
-                  bottom: 0,
-                  left: 0,
-                  right: 0,
-                  height: 20,
-                  child: _GridPaddedText(cm.title),
-                ),
-                if (comicLabel.containsKey(cm.url)) Icon(Icons.new_label),
-              ],
+        return GestureDetector(
+          onTap: (){if (onTap != null) onTap!(context, cm);},
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(7.14),
+            child: ColoredBox(
+              color: Colors.green,
+              child: Stack(
+                children: [
+                  ComicCover(imageUrl: cm.cover),
+                  Positioned(
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    height: 20,
+                    child: _GridPaddedText(cm.title),
+                  ),
+                  if (comicLabel.containsKey(cm.url)) Icon(Icons.new_label),
+                ],
+              )
             )
           )
         );
@@ -84,34 +88,6 @@ class _GridPaddedText extends StatelessWidget{
 
 
 
-class _GridCachedImage extends StatelessWidget {
-  final String imageUrl;
-
-  const _GridCachedImage(this.imageUrl, {super.key});
-
-
-
-  static final cacheManager = CacheManager(Config(   
-      "covers",
-      stalePeriod        : const Duration(days: 7),
-      maxNrOfCacheObjects: 200,
-  ));
-
-
-  @override
-  Widget build(BuildContext context) {
-    return CachedNetworkImage(
-      imageUrl    : imageUrl,
-      cacheManager: cacheManager,
-      height      : double.infinity,
-      width       : double.infinity,
-      fit         : BoxFit.cover,
-      errorWidget : (_, _, error) => Icon(Icons.error),
-      httpHeaders : IMAGE_HEADERS,
-      
-    );
-  }
-}
 
 
 

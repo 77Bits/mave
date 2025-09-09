@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 
 class NetworkIssueRetryWidget extends StatelessWidget{
-  final Function() retryFuntion;
+  final void Function() retryFuntion;
   final String     msg;
 
   NetworkIssueRetryWidget(this.retryFuntion, [this.msg="Retry", Key? key]): super(key: key);
