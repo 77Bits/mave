@@ -1,8 +1,9 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:mave/modules/modules.dart' show Comic;
+import 'package:mave/modules/modules.dart' show Comic, ComicDetails;
 import 'package:mave/pages/widgets.dart' show ComicCover;
 import 'package:mave/pages/widgets/network_issue.dart';
+import 'package:mave/modules/fetch.dart' as fetch;
 
 
 
@@ -25,28 +26,44 @@ class ComicPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: Text(comic.title)),
       body  : FutureBuilder(
-        future : Future.delayed(Duration(seconds: 6)), 
+        future : fetch.loadComicDetails(comic.url), 
         builder: _snapshotBuilder,
       ),
     );
   }
 
 
-  Widget _snapshotBuilder(BuildContext context, AsyncSnapshot<void> snapshot){
+  List<Widget> _createInfoSections(ComicDetails comicDtls){
+    return [
+      if (comicDtls.genres.isNotEmpty) _InfoSection(Wrap(
+        spacing: 4.3,
+        children: comicDtls.genres.map((e)=>Text(e)).toList(),
+      )),
+      if (comicDtls.story != null) _InfoSection(Text(comicDtls.story!)),
+    ];
+  }
+
+
+  Widget _snapshotBuilder(BuildContext context, AsyncSnapshot<ComicDetails> snapshot){
     List<Widget> children = [_InfoHeader(comic.cover, comic.title)];
     if (snapshot.connectionState != ConnectionState.done)
       children.add(_InfoSection(CircularProgressIndicator()));
-  
+
     else{
       if (snapshot.hasError)
         children.add(_handleError(snapshot.error!));
+      else 
+        children.addAll(_createInfoSections(snapshot.data!));
     }
       
-    return Column(
+    return SingleChildScrollView(
+      child: Column(
         mainAxisSize: MainAxisSize.min,
-        children: children,
+        children    : children,
+      )
     );
   }
+
 
   static Widget _handleError(Object error){
     if (error is SocketException)
@@ -98,7 +115,7 @@ class _InfoSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(13),
+      padding: EdgeInsets.symmetric(vertical: 13/2, horizontal: 13),
       child  : ColoredBox(
         color: Colors.red,
         child: Padding(

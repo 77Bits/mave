@@ -1,6 +1,6 @@
 import 'package:html/parser.dart';
 import 'package:html/dom.dart' show Document, Element;
-import 'package:mave/modules/modules.dart' show Comic;
+import 'package:mave/modules/modules.dart' show Comic, ComicDetails;
 import 'info.dart' show URL_PREFIX;
 
 
@@ -14,10 +14,45 @@ class Scraper{
     return _RecentpageScraper(htmlCode).get_comics();
   }
 
+
   static Iterable<Comic> newComics(String htmlCode){
     return _NewpageScraper(htmlCode).get_comics();
   }
+
+
+  static ComicDetails comicDetails(String htmlCode){
+    return _ComicpaeScraper(htmlCode).getDetails();
+  }
 }
+
+
+
+class _ComicpaeScraper{
+  late final Document tree;
+
+  _ComicpaeScraper(String htmlCode){ tree = parse(htmlCode);}
+
+
+  ComicDetails getDetails(){
+    return ComicDetails(
+      genres: genres(),
+      story : story(), 
+    );
+  }
+
+
+  List<String> genres(){
+    return tree.querySelectorAll('div.mb-3 > a.text-sm')
+      .map((e)=>e.text.trim().toUpperCase()).toList();
+  }
+
+
+  String? story(){
+    final pTag = tree.querySelector('p.text--secondary');
+    return (pTag == null)?null:pTag.text;
+  }
+}
+
 
 class _NewpageScraper extends _RecentpageScraper{
 
@@ -32,6 +67,8 @@ class _NewpageScraper extends _RecentpageScraper{
     );
   }
 }
+
+
 
 class _RecentpageScraper {
 

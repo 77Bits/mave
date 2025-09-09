@@ -1,3 +1,30 @@
+
+
+
+enum ComicType{
+  manga, 
+  webtoon, 
+  comic
+}
+
+
+
+class ComicDetails{
+  final String?      story;
+  final List<String> genres;
+  final int?         year;
+  final ComicType?   type;
+
+  const ComicDetails({
+    this.story,
+    this.year,
+    this.type,
+    required this.genres,
+  });
+}
+
+
+
 enum ComicState {
   normal,
   favorite,
